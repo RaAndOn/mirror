@@ -7,3 +7,5 @@ https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your
 
 ACTIVATE VIRTUALENV
 source mirror/kiosk/kiosknv/bin/activate
+
+IPython is a debugger. learn to use it
