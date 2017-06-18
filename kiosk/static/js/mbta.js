@@ -90,82 +90,82 @@ function sortDirections (json_object) {
 }
 
 function createNullTrain (direction) {
-    var nullTrainObject = {
-    "direction_name": "No "+direction+" trains",
-    "trip":[
-        {"trip_headsign": "No "+direction+" trains", "pre_away": "Infinity"},
-            ]
-    }
-    return nullTrainObject;
+  var nullTrainObject = {
+  "direction_name": "No "+direction+" trains",
+  "trip":[
+      {"trip_headsign": "No "+direction+" trains", "pre_away": "Infinity"},
+          ]
+  }
+  return nullTrainObject;
 }
 
 function locationSuccess ( position ) {
-    try {
-        // Get cache and parse localStorage.weatherCache so you can access elements using cache 
-        var cache = localStorage.weatherCache && JSON.parse( localStorage.weatherCache );
-        
-        var d = new Date();
+  try {
+      // Get cache and parse localStorage.weatherCache so you can access elements using cache 
+      var cache = localStorage.weatherCache && JSON.parse( localStorage.weatherCache );
+      
+      var d = new Date();
 
-        if ( cache && cache.timestamp && cache.timestamp > d.getTime() - 1*60*1000 ) {
-            var offset = d.getTimezoneOffset() * 60 * 1000;
-            var city = cache.data.city.name;
-            var country = cache.data.city.country;
-            var current_weather = cache.data.list[0];
-            //this commented out code is a how to iterate through the list of html
-            // $.each (cache.data.list, function() {
-            $(document).ready(function() {
-                //"this" holds a forecast object
-                // Get the local time of this forecast (the api returns it in utc)
+      if ( cache && cache.timestamp && cache.timestamp > d.getTime() - 1*60*1000 ) {
+          var offset = d.getTimezoneOffset() * 60 * 1000;
+          var city = cache.data.city.name;
+          var country = cache.data.city.country;
+          var current_weather = cache.data.list[0];
+          //this commented out code is a how to iterate through the list of html
+          // $.each (cache.data.list, function() {
+          $(document).ready(function() {
+              //"this" holds a forecast object
+              // Get the local time of this forecast (the api returns it in utc)
 
-                var localTime = new Date(this.dt*1000 - offset);
-                // console.log(this.main.temp);
-                // addElement ("weather", "div", this.main.temp);
-                $("#weather").text(current_weather.main.temp);
-                // addWeather (
-                //     this.weather[0].icon;
-                //     // moment(localTime).calendar(),   // We are using the moment.js library to format the date
-                //     // this.weather[0].main + ' <b>' + convertTemperature(this.main.temp_min) + '°' + DEG +
-                //         ' / ' + convertTemperature(this.main.temp_max) + '°' + DEG+'</b>'
+              var localTime = new Date(this.dt*1000 - offset);
+              // console.log(this.main.temp);
+              // addElement ("weather", "div", this.main.temp);
+              $("#weather").text(current_weather.main.temp);
+              // addWeather (
+              //     this.weather[0].icon;
+              //     // moment(localTime).calendar(),   // We are using the moment.js library to format the date
+              //     // this.weather[0].main + ' <b>' + convertTemperature(this.main.temp_min) + '°' + DEG +
+              //         ' / ' + convertTemperature(this.main.temp_max) + '°' + DEG+'</b>'
 
-                // );
-            });
-            // // Add the location to the page
-            // location.html(city+', <b>'+country+'</b>');
+              // );
+          });
+          // // Add the location to the page
+          // location.html(city+', <b>'+country+'</b>');
 
-            // weatherDiv.addClass('loaded');
+          // weatherDiv.addClass('loaded');
 
-            // // Set the slider to the first slide
-            // showSlide(0);
+          // // Set the slider to the first slide
+          // showSlide(0);
 
-        }
+      }
 
-        else{
-            // If the cache is old or nonexistent, issue a new AJAX request
+      else{
+          // If the cache is old or nonexistent, issue a new AJAX request
 
-            var weatherAPI = 'http://api.openweathermap.org/data/2.5/forecast?lat='+position.coords.latitude+
-                                '&lon='+position.coords.longitude+'&appid='+key
+          var weatherAPI = 'http://api.openweathermap.org/data/2.5/forecast?lat='+position.coords.latitude+
+                              '&lon='+position.coords.longitude+'&appid='+key
 
-            $.getJSON(weatherAPI, function(response){
+          $.getJSON(weatherAPI, function(response){
 
-                // Store the cache
-                localStorage.weatherCache = JSON.stringify({
-                    timestamp:(new Date()).getTime(),   // getTime() returns milliseconds
-                    data: response
-                });
+              // Store the cache
+              localStorage.weatherCache = JSON.stringify({
+                  timestamp:(new Date()).getTime(),   // getTime() returns milliseconds
+                  data: response
+              });
 
-                // Call the function again
-                locationSuccess(position);
-            });
-        }
+              // Call the function again
+              locationSuccess(position);
+          });
+      }
 
-    }
-    catch(e){
-        locationError("We can't find information about your city!");
-        window.console && console.error(e);
-    }
+  }
+  catch(e){
+      locationError("We can't find information about your city!");
+      window.console && console.error(e);
+  }
 }
 
 
 function locationError (error) {
-    console.log(error);
+  console.log(error);
 }

@@ -12,12 +12,22 @@
 
 <div id="txt"></div>
 <div id="train">
+    <div id="station">
+    	<div id="southbound">
+    		<div id="southbound-eta">
+    		</div>
+    	</div>
+    	<div id="northbound">
+    		
+    	</div>
+    </div>
 </div>
 
 <br />
 <div id="weather"></div>
 
-{% if latest_message_list %}
+{% if false %}
+<!-- latest_message_list -->
     <ul>
     {% for message in latest_message_list %}
         <li><a href="{% url 'kiosk:detail' message.id %}">{{ message.message_text }}</a></li>
