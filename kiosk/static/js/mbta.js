@@ -36,23 +36,14 @@ function checkMBTA (){
     var url = 'http://realtime.mbta.com/developer/api/v2/predictionsbystop?api_key=wX9NwuHnZU2ToO7GmGR9uw&stop=place-davis&format=json';
     var json = $.getJSON(url, function(data) {
 // Perform any placement of json data in html here.
-      document.getElementById('train').innerHTML = data.stop_name;
+      $("#station > p").text(data.stop_name);
       var directions = sortDirections (data.mode[0].route[0].direction);
-      // console.log(directions[1].trip[0].pre_away)
-      addElement ("train", "div", directions[0].trip[0].trip_headsign);
-      addElement ("train", "div", directions[0].trip[0].pre_away);
-      addElement ("train", "div", directions[1].trip[0].trip_headsign);
-      addElement ("train", "div", directions[1].trip[0].pre_away);
+      $("#southbound > p").text(directions[0].trip[0].trip_headsign);
+      $("#southbound-eta > p ").text(directions[0].trip[0].pre_away);
+      $("#northbound > p").text(directions[1].trip[0].trip_headsign);
+      $("#northbound-eta > p").text(directions[1].trip[0].pre_away);
     });
   });
-}
-
-function addElement (existing_id, type, value) {
-  var new_element = document.createElement(type);
-  var node = document.createTextNode(value);
-  new_element.appendChild(node);
-  var existing_element = document.getElementById(existing_id);
-  existing_element.appendChild(new_element);
 }
 
 function sortDirections (json_object) {
