@@ -100,26 +100,27 @@ function createNullTrain (direction) {
 }
 
 function locationSuccess ( position ) {
-    console.log("HELLO");
     try {
         // Get cache and parse localStorage.weatherCache so you can access elements using cache 
         var cache = localStorage.weatherCache && JSON.parse( localStorage.weatherCache );
         
         var d = new Date();
 
-        if ( cache && cache.timestamp && cache.timestamp > d.getTime - 30*60*1000 ) {
+        if ( cache && cache.timestamp && cache.timestamp > d.getTime() - 1*60*1000 ) {
             var offset = d.getTimezoneOffset() * 60 * 1000;
             var city = cache.data.city.name;
             var country = cache.data.city.country;
-            console.log("GREAHH");
-            $.each (cache.data.list, function() {
+            var current_weather = cache.data.list[0];
+            //this commented out code is a how to iterate through the list of html
+            // $.each (cache.data.list, function() {
+            $(document).ready(function() {
                 //"this" holds a forecast object
                 // Get the local time of this forecast (the api returns it in utc)
 
                 var localTime = new Date(this.dt*1000 - offset);
-                console.log(this.weather[0].main.temp);
-                addElement ("weather", "div", this.weather[0].main.temp);
-
+                // console.log(this.main.temp);
+                // addElement ("weather", "div", this.main.temp);
+                $("#weather").text(current_weather.main.temp);
                 // addWeather (
                 //     this.weather[0].icon;
                 //     // moment(localTime).calendar(),   // We are using the moment.js library to format the date
@@ -139,7 +140,6 @@ function locationSuccess ( position ) {
         }
 
         else{
-
             // If the cache is old or nonexistent, issue a new AJAX request
 
             var weatherAPI = 'http://api.openweathermap.org/data/2.5/forecast?lat='+position.coords.latitude+
