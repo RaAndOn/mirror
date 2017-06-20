@@ -98,9 +98,9 @@ function locationSuccess ( position ) {
 
       if ( cache && cache.timestamp && cache.timestamp > d.getTime() - 1*60*1000 ) {
         var offset = d.getTimezoneOffset() * 60 * 1000;
-        var city = cache.data.city.name;
-        var country = cache.data.city.country;
-        var current_weather = cache.data.list[0];
+        var city = cache.data.name;
+        // var country = cache.data.city.country;
+        var current_weather = cache.data;
         var temp = convertTemp(current_weather.main.temp);
         var icon_src = "/static/images/" + current_weather.weather[0].icon + ".png";
         //this commented out code is a how to iterate through the list of html
@@ -132,8 +132,11 @@ function locationSuccess ( position ) {
 
       else{
         // If the cache is old or nonexistent, issue a new AJAX request
-        var weatherAPI = 'http://api.openweathermap.org/data/2.5/forecast?lat='+position.coords.latitude+
+        var weatherAPI = 'http://api.openweathermap.org/data/2.5/weather?lat='+position.coords.latitude+
                          '&lon='+position.coords.longitude+'&appid='+key
+        //The code below would provide a forecast return
+        // var weatherAPI = 'http://api.openweathermap.org/data/2.5/weather?lat='+position.coords.latitude+
+                         // '&lon='+position.coords.longitude+'&appid='+key
 
         $.getJSON(weatherAPI, function(response){
 
