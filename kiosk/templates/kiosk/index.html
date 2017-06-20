@@ -2,10 +2,10 @@
 <html>
 <head>
 {% load static %}
+<script src='http://code.jquery.com/jquery-1.11.0.min.js'></script>
 {% load bootstrap3 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
-<script src='http://code.jquery.com/jquery-1.11.0.min.js'></script>
 <script type="text/javascript" src='{% static "js/global.js" %}' ></script>
 <script type="text/javascript" src='{% static "js/mbta.js" %}' ></script>
 <script type="text/javascript" src='{% static "js/weather.js" %}' ></script>
@@ -14,7 +14,9 @@
 
 <body onload="startTime()">
 
-<div id="txt"></div>
+<div id="time">
+<p></p>
+</div>
 <div id="train" class="col-md-12">
   <div id="station" class="col-md-12">
     <p></p>
@@ -34,18 +36,13 @@
 </div>
 
 <br />
-<div id="weather"></div>
-
-{% if false %}
-<!-- latest_message_list -->
-    <ul>
-    {% for message in latest_message_list %}
-        <li><a href="{% url 'kiosk:detail' message.id %}">{{ message.message_text }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No messages are available.</p>
-{% endif %}
-
+<div id="weather">
+  <div id="temperature">
+    <p></p>
+  </div>
+  <div id="icon">
+    <image id="weather-icon"/>
+  </div>
+</div>
 </body>
 </html>

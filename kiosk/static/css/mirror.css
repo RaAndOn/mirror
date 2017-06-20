@@ -1,3 +1,16 @@
-div#train {
+body {
+  color: white;
+  background-color: black;
+}
+
+#time {
+  text-align: center;
+}
+
+#train {
+  text-align: center;
+}
+
+#weather {
   text-align: center;
 }

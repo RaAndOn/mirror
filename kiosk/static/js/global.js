@@ -1,5 +1,5 @@
 //global variables
-var DEG = 'c'; // c for celsius, f for fahrenheit
+var DEG = 'f'; // c for celsius, f for fahrenheit
 var weatherDiv = $('#weather');
 var scroller = $('#scroller');
 var place = $('p.loc');

@@ -5,8 +5,7 @@ function startTime () {
   var s = today.getSeconds();
   m = checkTime(m);
   s = checkTime(s);
-  document.getElementById('txt').innerHTML =
-  h + ':' + m + ':' + s;
+  $('#time > p').text( h + ':' + m + ':' + s );
   checkMBTA();
   // Used THIS https://stackoverflow.com/questions/24359073/navigator-geolocation-getcurrentposition-do-not-work-in-firefox-30-0
   //To change geolocation
@@ -38,10 +37,12 @@ function checkMBTA (){
 // Perform any placement of json data in html here.
       $("#station > p").text(data.stop_name);
       var directions = sortDirections (data.mode[0].route[0].direction);
+      var min_to_south = convertSecToMin( directions[0].trip[0].pre_away );
+      var min_to_north = convertSecToMin( directions[1].trip[0].pre_away );
       $("#southbound > p").text(directions[0].trip[0].trip_headsign);
-      $("#southbound-eta > p ").text(directions[0].trip[0].pre_away);
+      $("#southbound-eta > p ").text(min_to_south);
       $("#northbound > p").text(directions[1].trip[0].trip_headsign);
-      $("#northbound-eta > p").text(directions[1].trip[0].pre_away);
+      $("#northbound-eta > p").text(min_to_north);
     });
   });
 }
@@ -100,6 +101,8 @@ function locationSuccess ( position ) {
         var city = cache.data.city.name;
         var country = cache.data.city.country;
         var current_weather = cache.data.list[0];
+        var temp = convertTemp(current_weather.main.temp);
+        var icon_src = "/static/images/" + current_weather.weather[0].icon + ".png";
         //this commented out code is a how to iterate through the list of html
         // $.each (cache.data.list, function() {
         $(document).ready(function() {
@@ -108,7 +111,8 @@ function locationSuccess ( position ) {
           var localTime = new Date(this.dt*1000 - offset);
             // console.log(this.main.temp);
             // addElement ("weather", "div", this.main.temp);
-            $("#weather").text(current_weather.main.temp);
+            $("#temperature").text(temp);
+            $("#weather-icon").attr("src", icon_src);
             // addWeather (
             //     this.weather[0].icon;
             //     // moment(localTime).calendar(),   // We are using the moment.js library to format the date
@@ -153,4 +157,31 @@ function locationSuccess ( position ) {
 
 function locationError (error) {
   console.log(error);
+}
+
+function convertTemp (tempK) {
+  switch (DEG) {
+    case 'f':
+      return parseInt(tempK * 9/5 - 459.67).toString() + 'F';
+      break;
+    case 'c':
+      return parseInt(tempK - 273.15).toString() + 'C';
+      break;
+    default:
+      return tempK.toString() + 'K';
+    }
+
+}
+
+function convertSecToMin (seconds) {
+  var min = parseInt(seconds/60)
+  switch ( min == 0 ) {
+    case true: 
+      return "Train Arriving";
+      break;
+    case false:
+      return min.toString() + ' Min';
+      break;
+    default:
+  }
 }

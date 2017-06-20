@@ -21,3 +21,5 @@ PLAN:
 overhaul to use / learn backbone.js
 http://backbonejs.org/#examples
 http://backbonejs.org/docs/todos.html
+
+Weather Icons courtesy of: https://www.iconfinder.com/iconsets/weather-collection-1
