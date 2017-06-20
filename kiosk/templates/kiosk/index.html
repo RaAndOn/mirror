@@ -2,25 +2,29 @@
 <html>
 <head>
 {% load static %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 <script src='http://code.jquery.com/jquery-1.11.0.min.js'></script>
 <script type="text/javascript" src='{% static "js/global.js" %}' ></script>
 <script type="text/javascript" src='{% static "js/mbta.js" %}' ></script>
 <script type="text/javascript" src='{% static "js/weather.js" %}' ></script>
+<link rel="stylesheet" type="text/css" href='{% static "css/mirror.css" %}'>
 </head>
 
 <body onload="startTime()">
 
 <div id="txt"></div>
-<div id="train">
-  <div id="station">
+<div id="train" class="col-md-12">
+  <div id="station" class="col-md-12">
     <p></p>
-    <div id="southbound">
+    <div id="southbound" class="col-md-6">
       <p></p>
       <div id="southbound-eta">
       <p></p>
       </div>
     </div>
-    <div id="northbound">
+    <div id="northbound" class="col-md-6">
       <p></p>
       <div id="northbound-eta">
       <p></p>
