@@ -11,6 +11,10 @@ body {
   text-align: center;
 }
 
-#weather {
+#current-weather {
+  text-align: center;
+}
+
+#forecast-weather {
   text-align: center;
 }

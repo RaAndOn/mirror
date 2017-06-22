@@ -9,7 +9,6 @@ function startTime () {
   checkMBTA();
   // Used THIS https://stackoverflow.com/questions/24359073/navigator-geolocation-getcurrentposition-do-not-work-in-firefox-30-0
   //To change geolocation
-  console.log(lastCheck);
   if ( lastCheck != m ) {
     lastCheck = m;
     if ( navigator.geolocation) {
@@ -30,7 +29,7 @@ function checkTime (i) {
 function checkMBTA (){
   //$(document).ready( only makes the function available AND RUNS IT after the page is loaded ("ready")
   $(document).ready(function() {
-    console.log( 'ready!' );
+    // console.log( 'ready!' );
     var stop_name;
     var url = 'http://realtime.mbta.com/developer/api/v2/predictionsbystop?api_key=wX9NwuHnZU2ToO7GmGR9uw&stop=place-davis&format=json';
     var json = $.getJSON(url, function(data) {
@@ -91,64 +90,73 @@ function createNullTrain (direction) {
 
 function locationSuccess ( position ) {
   try {
-      // Get cache and parse localStorage.weatherCache so you can access elements using cache 
-      var cache = localStorage.weatherCache && JSON.parse( localStorage.weatherCache );
-      
-      var d = new Date();
+    // Get cache and parse localStorage.weatherCache so you can access elements using cache 
+    var weatherCache = localStorage.weatherCache && JSON.parse( localStorage.weatherCache );
+    var forecastCache = localStorage.forecastCache && JSON.parse( localStorage.forecastCache );
+    
+    var d = new Date();
 
-      if ( cache && cache.timestamp && cache.timestamp > d.getTime() - 1*60*1000 ) {
-        var offset = d.getTimezoneOffset() * 60 * 1000;
-        var city = cache.data.name;
-        // var country = cache.data.city.country;
-        var current_weather = cache.data;
-        var temp = convertTemp(current_weather.main.temp);
-        var icon_src = "/static/images/" + current_weather.weather[0].icon + ".png";
-        //this commented out code is a how to iterate through the list of html
-        // $.each (cache.data.list, function() {
-        $(document).ready(function() {
-          //"this" holds a forecast object
-          // Get the local time of this forecast (the api returns it in utc)
-          var localTime = new Date(this.dt*1000 - offset);
-            // console.log(this.main.temp);
-            // addElement ("weather", "div", this.main.temp);
-            $("#temperature").text(temp);
-            $("#weather-icon").attr("src", icon_src);
-            // addWeather (
-            //     this.weather[0].icon;
-            //     // moment(localTime).calendar(),   // We are using the moment.js library to format the date
-            //     // this.weather[0].main + ' <b>' + convertTemperature(this.main.temp_min) + '°' + DEG +
-            //         ' / ' + convertTemperature(this.main.temp_max) + '°' + DEG+'</b>'
-            // );
-          });
-          // Add the location to the page
-          // location.html(city+', <b>'+country+'</b>');
-
-          // weatherDiv.addClass('loaded');
-
-          // // Set the slider to the first slide
-          // showSlide(0);
-
+    if ( weatherCache && weatherCache.timestamp && weatherCache.timestamp > d.getTime() - 1*60*1000 ) {
+      var offset = d.getTimezoneOffset() * 60 * 1000;
+      var current_weather = weatherCache.data;
+      var forecast_weather = forecastCache.data;
+      var current_temp = convertTemp(current_weather.main.temp);
+      var current_icon_src = "/static/images/" + current_weather.weather[0].icon + ".png";
+      var high_temp = current_weather.main.temp_max;
+      var low_temp = current_weather.main.temp_min;
+      var forecast_icon_src = [];
+      for (var i = 0; i < forecastLength; i++) {
+        forecast_icon_src.push("/static/images/" + forecast_weather.list[i].weather[0].icon + ".png");
+        high_temp = Math.max( high_temp, forecast_weather.list[i].main.temp_max);
+        low_temp = Math.min( low_temp, forecast_weather.list[i].main.temp_min);
       }
+      high_temp = convertTemp( high_temp );
+      low_temp = convertTemp( low_temp );
+      //this commented out code is a how to iterate through the list of html
+      // $.each (cache.data.list, function() {
+      $(document).ready(function() {
+        //"this" holds a forecast object
+        // Get the local time of this forecast (the api returns it in utc)
+        var localTime = new Date(this.dt*1000 - offset);
+        $("#min-temp").text(low_temp);
+        $("#max-temp").text(high_temp);
+        $("#weather-icon-current").attr("src", current_icon_src);
+        $("img").filter("#forecast-icon").remove();
+        for (var i = forecastLength-1; i >= 0; i--){
+          $('#forecast-weather').prepend("<img src='"+forecast_icon_src[i]+"' class='col-md-4' id='forecast-icon'/>");
+        }
+      });
 
-      else{
-        // If the cache is old or nonexistent, issue a new AJAX request
-        var weatherAPI = 'http://api.openweathermap.org/data/2.5/weather?lat='+position.coords.latitude+
-                         '&lon='+position.coords.longitude+'&appid='+key
-        //The code below would provide a forecast return
-        // var weatherAPI = 'http://api.openweathermap.org/data/2.5/weather?lat='+position.coords.latitude+
-                         // '&lon='+position.coords.longitude+'&appid='+key
+    }
 
-        $.getJSON(weatherAPI, function(response){
+    else{
+      var weatherAPI = 'http://api.openweathermap.org/data/2.5/weather?lat='+position.coords.latitude+
+                       '&lon='+position.coords.longitude+'&appid='+key;
+      //The code below would provide a forecast return
+      var forecastAPI = 'http://api.openweathermap.org/data/2.5/forecast?lat='+position.coords.latitude+
+                       '&lon='+position.coords.longitude+'&appid='+key;
 
-            // Store the cache
-          localStorage.weatherCache = JSON.stringify({
-            timestamp:(new Date()).getTime(),   // getTime() returns milliseconds
-            data: response
-          });
-          // Call the function again
-          locationSuccess(position);
+      $.getJSON(weatherAPI, function(response){
+          // Store the cache
+        localStorage.weatherCache = JSON.stringify({
+          timestamp:(new Date()).getTime(),   // getTime() returns milliseconds
+          data: response
         });
-      }
+      });
+
+      $.getJSON(forecastAPI, function(response){
+
+          // Store the cache
+        localStorage.forecastCache = JSON.stringify({
+          timestamp:(new Date()).getTime(),   // getTime() returns milliseconds
+          data: response
+        });
+        // Call the function again
+        locationSuccess(position);
+      });
+      // Recurssive call MUST happen in the getJSON function.
+      // If it is done outside the function the file breaks cause JavaScript can't do recursive calls
+    }
 
   }
   catch(e){
