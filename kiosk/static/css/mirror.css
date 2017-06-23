@@ -1,6 +1,21 @@
 body {
   color: white;
   background-color: black;
+  height: 100%;
+  overflow: hidden;
+}
+
+html {
+  height: 100%;
+}
+
+//body.noScroll { /* ...or body.dialogShowing */
+//  overflow: hidden;
+//}
+
+#frame{
+  height: 100vh;
+  margin: 0 auto;
 }
 
 #time {
@@ -12,9 +27,17 @@ body {
 }
 
 #current-weather {
-  text-align: center;
+  text-align: right;
+}
+
+#min-temp {
+  color: blue;
+}
+
+#max-temp {
+  color: red;
 }
 
 #forecast-weather {
-  text-align: center;
+  text-align: left;
 }

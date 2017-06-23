@@ -12,43 +12,46 @@
 <link rel="stylesheet" type="text/css" href='{% static "css/mirror.css" %}'>
 </head>
 
-<body onload="startTime()">
+<body onload="startTime()" class="noScroll">
+<div id="frame">
+  <div id="time">
+    <h1></h1>
+  </div>
 
-<div id="time">
-<p></p>
-</div>
-<div id="train" class="col-md-12">
-  <div id="station" class="col-md-12">
-    <p></p>
-    <div id="southbound" class="col-md-6">
-      <p></p>
-      <div id="southbound-eta">
-      <p></p>
-      </div>
+  <br />
+  <div id="forecast-weather" class="col-md-6">
+  </div>
+
+  <div id="current-weather" class="col-md-6">
+    <div id="max-temp" class="col-md-12">
+      <h1></h1>
     </div>
-    <div id="northbound" class="col-md-6">
-      <p></p>
-      <div id="northbound-eta">
-      <p></p>
-      </div>
+    <div id="icon" class="col-md-12">
+      <img id="weather-icon-current" class="img-responsive pull-right"/>
     </div>
- </div>
-</div>
+    <div id="min-temp" class="col-md-12">
+      <h1></h1>
+    </div>
+  </div>
 
-<br />
-<div id="current-weather" class="col-md-12">
-  <div id="min-temp" class="col-md-4">
-    <p></p>
+  <div id="train" class="col-md-12 pull-down">
+    <div id="station" class="col-md-12">
+      <h1></h1>
+      <div id="southbound" class="col-md-6">
+        <h1></h1>
+        <div id="southbound-eta">
+        <h1></h1>
+        </div>
+      </div>
+      <div id="northbound" class="col-md-6">
+        <h1></h1>
+        <div id="northbound-eta">
+        <h1></h1>
+        </div>
+      </div>
+   </div>
   </div>
-  <div id="icon" class="col-md-4">
-    <image id="weather-icon-current"/>
-  </div>
-  <div id="max-temp" class="col-md-4">
-    <p></p>
-  </div>
-</div>
 
-<div id="forecast-weather" class="col-md-12">
 </div>
 
 </body>

@@ -5,7 +5,7 @@ function startTime () {
   var s = today.getSeconds();
   m = checkTime(m);
   s = checkTime(s);
-  $('#time > p').text( h + ':' + m + ':' + s );
+  $('#time > h1').text( h + ':' + m + ':' + s );
   checkMBTA();
   // Used THIS https://stackoverflow.com/questions/24359073/navigator-geolocation-getcurrentposition-do-not-work-in-firefox-30-0
   //To change geolocation
@@ -18,6 +18,11 @@ function startTime () {
       locationError ( "Your Browser Does Not Support Geolocations");
     }
   }
+  $(document).ready(function(){
+    $(window).resize(function(){
+        $(".fullheight").height($(document).height());
+    });
+  });
   var t = setTimeout(startTime, 1000);
 }
 
@@ -29,19 +34,18 @@ function checkTime (i) {
 function checkMBTA (){
   //$(document).ready( only makes the function available AND RUNS IT after the page is loaded ("ready")
   $(document).ready(function() {
-    // console.log( 'ready!' );
     var stop_name;
     var url = 'http://realtime.mbta.com/developer/api/v2/predictionsbystop?api_key=wX9NwuHnZU2ToO7GmGR9uw&stop=place-davis&format=json';
     var json = $.getJSON(url, function(data) {
 // Perform any placement of json data in html here.
-      $("#station > p").text(data.stop_name);
+      $("#station > h1").text(data.stop_name);
       var directions = sortDirections (data.mode[0].route[0].direction);
       var min_to_south = convertSecToMin( directions[0].trip[0].pre_away );
       var min_to_north = convertSecToMin( directions[1].trip[0].pre_away );
-      $("#southbound > p").text(directions[0].trip[0].trip_headsign);
-      $("#southbound-eta > p ").text(min_to_south);
-      $("#northbound > p").text(directions[1].trip[0].trip_headsign);
-      $("#northbound-eta > p").text(min_to_north);
+      $("#southbound > h1").text(directions[0].trip[0].trip_headsign);
+      $("#southbound-eta > h1 ").text(min_to_south);
+      $("#northbound > h1").text(directions[1].trip[0].trip_headsign);
+      $("#northbound-eta > h1").text(min_to_north);
     });
   });
 }
@@ -118,12 +122,12 @@ function locationSuccess ( position ) {
         //"this" holds a forecast object
         // Get the local time of this forecast (the api returns it in utc)
         var localTime = new Date(this.dt*1000 - offset);
-        $("#min-temp").text(low_temp);
-        $("#max-temp").text(high_temp);
-        $("#weather-icon-current").attr("src", current_icon_src);
+        $("#min-temp > h1").text(low_temp);
+        $("#max-temp > h1").text(high_temp);
+        $("#weather-icon-current").attr("src", current_icon_src).css("height", currWeatherIconSize+"px");
         $("img").filter("#forecast-icon").remove();
         for (var i = forecastLength-1; i >= 0; i--){
-          $('#forecast-weather').prepend("<img src='"+forecast_icon_src[i]+"' class='col-md-4' id='forecast-icon'/>");
+          $('#forecast-weather').prepend("<img src='"+forecast_icon_src[i]+"' class='img-responsive' id='forecast-icon' style='width:"+currWeatherIconSize+"px')/>");
         }
       });
 
