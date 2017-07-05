@@ -8,4 +8,4 @@ var lastCheck = 0;
 var forecastLength = 3;
 var windowHeight = $(window).height();
 var currWeatherIconSize = (windowHeight/4).toString();
-var forecastWeatherIconSize = (windowHeight/6).toString();
+var forecastWeatherIconSize = (windowHeight/4).toString();

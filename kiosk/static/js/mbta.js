@@ -123,11 +123,13 @@ function locationSuccess ( position ) {
         // Get the local time of this forecast (the api returns it in utc)
         var localTime = new Date(this.dt*1000 - offset);
         $("#min-temp > h1").text(low_temp);
+        $("#min-temp").css("height", currWeatherIconSize+"px");
         $("#max-temp > h1").text(high_temp);
+        $("#max-temp").css("height", currWeatherIconSize+"px");
         $("#weather-icon-current").attr("src", current_icon_src).css("height", currWeatherIconSize+"px");
         $("img").filter("#forecast-icon").remove();
         for (var i = forecastLength-1; i >= 0; i--){
-          $('#forecast-weather').prepend("<img src='"+forecast_icon_src[i]+"' class='img-responsive' id='forecast-icon' style='width:"+currWeatherIconSize+"px')/>");
+          $('#forecast-weather').prepend("<img src='"+forecast_icon_src[i]+"' class='img-responsive center-block' id='forecast-icon' style='width:"+forecastWeatherIconSize+"px')/>");
         }
       });
 
