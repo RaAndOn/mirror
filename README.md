@@ -4,6 +4,20 @@ Need to `sudo apt-get install libpq-dev` to get posgresql to work
 `sudo apt-get install python-pip python-dev libpq-dev postgresql postgresql-contrib`
 https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04
 
+SETUP DB:
+```
+  CREATE DATABASE kiosk;
+  CREATE USER kioskuser WITH PASSWORD 'password';
+  ALTER ROLE kioskuser SET client_encoding TO 'utf8';
+  ALTER ROLE kioskuser SET default_transaction_isolation TO 'read committed';
+  ALTER ROLE kioskuser SET timezone TO 'UTC';
+  GRANT ALL PRIVILEGES ON DATABASE kiosk TO kioskuser;
+
+
+  \q
+  exit
+```
+
 On Raspberry Pi to get pillow to work
 `sudo apt-get install libjpeg8-dev`
 
