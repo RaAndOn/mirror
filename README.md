@@ -32,6 +32,22 @@ To go to db on command line:
 ACTIVATE VIRTUALENV
 source mirror/kiosk/kiosknv/bin/activate
 
+
+
+MAKE IT RUN ON STARTUP
+Move the script 'mirror-startup.sh' to /etc/init.d/ of your raspberry pi.
+```
+  sudo chmod +x /etc/inti.d/mirror-startup.sh
+```
+
+Add the following line to the bottom of ~/.config/lxsession/LXDE-pi/autostart
+```
+  @/etc/inti.d/mirror-startup.sh
+```
+
+
+
+
 IPython is a debugger. learn to use it
 
 PLAN:
